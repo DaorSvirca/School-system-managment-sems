@@ -21,8 +21,10 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectDto findById(Long aLong) {
-        return null;
+    public SubjectDto findById(Long id) {
+        var subject = subjectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Subject not found"));
+        return subjectMapper.toDto(subject);
     }
 
     @Override
@@ -33,12 +35,20 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        if (!subjectRepository.existsById(id)) {
+            throw new RuntimeException("Subject not found");
+        }
+        subjectRepository.deleteById(id);
     }
 
     @Override
-    public SubjectDto modify(Long aLong, SubjectDto entity) {
-        return null;
+    public SubjectDto modify(Long id, SubjectDto entity) {
+        if (!id.equals(entity.getSubjectId())) {
+            throw new IllegalArgumentException("Id in path and body must be the same");
+        }
+        var subjects = subjectMapper.toEntity(entity);
+        var updatedSubjects = subjectRepository.save(subjects);
+        return subjectMapper.toDto(updatedSubjects);
     }
 }

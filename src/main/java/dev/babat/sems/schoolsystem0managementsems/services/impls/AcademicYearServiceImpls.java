@@ -22,8 +22,10 @@ public class AcademicYearServiceImpls implements AcademicYearService {
     }
 
     @Override
-    public AcademicYearDto findById(Long aLong) {
-        return null;
+    public AcademicYearDto findById(Long id) {
+        var academicYear = academicYearRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Academic year not found"));
+        return academicYearMapper.toDto(academicYear);
     }
 
     @Override
@@ -34,12 +36,21 @@ public class AcademicYearServiceImpls implements AcademicYearService {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(Long id) {
+        if (!academicYearRepository.existsById(id)) {
+            throw new RuntimeException("Academic year not found");
+        }
+        academicYearRepository.deleteById(id);
 
     }
 
     @Override
-    public AcademicYearDto modify(Long aLong, AcademicYearDto entity) {
-        return null;
+    public AcademicYearDto modify(Long id, AcademicYearDto entity) {
+        if (!id.equals(entity.getAcademicYearId())) {
+            throw new IllegalArgumentException("Id in path and body must be the same");
+        }
+        var academicYears = academicYearMapper.toEntity(entity);
+        var updatedAcademicYears = academicYearRepository.save(academicYears);
+        return academicYearMapper.toDto(updatedAcademicYears);
     }
 }

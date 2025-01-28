@@ -22,8 +22,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findById(Long aLong) {
-        return null;
+    public UserDto findById(Long id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userMapper.toDto(user);
     }
 
     @Override
@@ -34,12 +36,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found");
+        }
+        userRepository.deleteById(id);
     }
 
     @Override
-    public UserDto modify(Long aLong, UserDto entity) {
-        return null;
+    public UserDto modify(Long id, UserDto entity) {
+        if (!id.equals(entity.getUserId())) {
+            throw new IllegalArgumentException("Id in path and body must be the same");
+        }
+        var users = userMapper.toEntity(entity);
+        var updatedUsers = userRepository.save(users);
+        return userMapper.toDto(updatedUsers);
     }
 }

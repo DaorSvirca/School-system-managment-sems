@@ -22,8 +22,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDto findById(Long aLong) {
-        return null;
+    public RoleDto findById(Long id) {
+        var role = roleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        return roleMapper.toDto(role);
     }
 
     @Override
@@ -34,12 +36,20 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        if (!roleRepository.existsById(id)) {
+            throw new RuntimeException("Role not found");
+        }
+        roleRepository.deleteById(id);
     }
 
     @Override
-    public RoleDto modify(Long aLong, RoleDto entity) {
-        return null;
+    public RoleDto modify(Long id, RoleDto entity) {
+        if (!id.equals(entity.getRoleId())) {
+            throw new IllegalArgumentException("Id in path and body must be the same");
+        }
+        var roles = roleMapper.toEntity(entity);
+        var updatedRoles = roleRepository.save(roles);
+        return roleMapper.toDto(updatedRoles);
     }
 }

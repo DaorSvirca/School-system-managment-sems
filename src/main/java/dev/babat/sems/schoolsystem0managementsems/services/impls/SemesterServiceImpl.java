@@ -21,8 +21,10 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public SemesterDto findById(Long aLong) {
-        return null;
+    public SemesterDto findById(Long id) {
+        var semester = semesterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Semester not found"));
+        return semesterMapper.toDto(semester);
     }
 
     @Override
@@ -33,12 +35,20 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        if (!semesterRepository.existsById(id)) {
+            throw new RuntimeException("Semester not found");
+        }
+        semesterRepository.deleteById(id);
     }
 
     @Override
-    public SemesterDto modify(Long aLong, SemesterDto entity) {
-        return null;
+    public SemesterDto modify(Long id, SemesterDto entity) {
+        if (!id.equals(entity.getSemesterId())) {
+            throw new IllegalArgumentException("Id in path and body must be the same");
+        }
+        var semesters = semesterMapper.toEntity(entity);
+        var updatedSemesters = semesterRepository.save(semesters);
+        return semesterMapper.toDto(updatedSemesters);
     }
 }

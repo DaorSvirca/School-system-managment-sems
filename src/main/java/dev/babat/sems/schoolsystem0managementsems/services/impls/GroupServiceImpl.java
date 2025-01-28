@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Slf4j
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,31 +24,35 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDto findById(Long aLong) {
-
-        return null;
+    public GroupDto findById(Long id) {
+        var product = groupRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Group not found"));
+        return groupMapper.toDto(product);
     }
 
     @Override
     public GroupDto add(GroupDto entity) {
-        log.info("Received GroupDto: {}", entity);
-
         var groups = groupMapper.toEntity(entity);
-        log.info("Mapped Entity: {}", groups);
-
         var savedGroups = groupRepository.save(groups);
-        log.info("Saved Entity: {}", savedGroups);
-
         return groupMapper.toDto(savedGroups);
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(Long id) {
+        if (!groupRepository.existsById(id)) {
+            throw new RuntimeException("Group not found");
+        }
+        groupRepository.deleteById(id);
 
     }
 
     @Override
-    public GroupDto modify(Long aLong, GroupDto entity) {
-        return null;
+    public GroupDto modify(Long id, GroupDto entity) {
+        if (!id.equals(entity.getGroupId())) {
+            throw new IllegalArgumentException("Id in path and body must be the same");
+        }
+        var groups = groupMapper.toEntity(entity);
+        var updatedGroups = groupRepository.save(groups);
+        return groupMapper.toDto(updatedGroups);
     }
 }

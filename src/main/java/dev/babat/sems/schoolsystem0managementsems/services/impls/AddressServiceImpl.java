@@ -23,9 +23,10 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDto findById(Long aLong) {
-        var address = addressRepository.findById(aLong);
-        return addressMapper.toDto(address.orElse(null));
+    public AddressDto findById(Long id) {
+        var address = addressRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+        return addressMapper.toDto(address);
     }
 
     @Override
@@ -37,12 +38,21 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(Long id) {
+        if (!addressRepository.existsById(id)) {
+            throw new RuntimeException("Address not found");
+        }
+        addressRepository.deleteById(id);
 
     }
 
     @Override
-    public AddressDto modify(Long aLong, AddressDto entity) {
-        return null;
+    public AddressDto modify(Long id, AddressDto entity) {
+        if (!id.equals(entity.getAddressId())) {
+            throw new IllegalArgumentException("Id in path and body must be the same");
+        }
+        var addresses = addressMapper.toEntity(entity);
+        var updatedAddresses = addressRepository.save(addresses);
+        return addressMapper.toDto(updatedAddresses);
     }
 }

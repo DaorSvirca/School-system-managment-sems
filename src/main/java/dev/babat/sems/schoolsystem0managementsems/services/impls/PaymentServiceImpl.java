@@ -22,8 +22,10 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDto findById(Long aLong) {
-        return null;
+    public PaymentDto findById(Long id) {
+        var payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
+        return paymentMapper.toDto(payment);
     }
 
     @Override
@@ -34,12 +36,20 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        if (!paymentRepository.existsById(id)) {
+            throw new RuntimeException("Payment not found");
+        }
+        paymentRepository.deleteById(id);
     }
 
     @Override
-    public PaymentDto modify(Long aLong, PaymentDto entity) {
-        return null;
+    public PaymentDto modify(Long id, PaymentDto entity) {
+        if (!id.equals(entity.getPaymentId())) {
+            throw new IllegalArgumentException("Id in path and body must be the same");
+        }
+        var payments = paymentMapper.toEntity(entity);
+        var updatedPayments = paymentRepository.save(payments);
+        return paymentMapper.toDto(updatedPayments);
     }
 }
