@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +24,8 @@ public class UserDto {
     @Email(message = "Email must be a valid")
     @NotBlank(message = "Email is required")
     private String email;
+    @NotBlank(message = "Password is required")
+    private String password;
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
     @Past(message = "Birth date must be in the past")
@@ -35,4 +38,9 @@ public class UserDto {
     private RoleDto role;
     @NotNull(message = "Active status is required")
     private boolean isActive;
+    @NotNull(message = "Date is required")
+    private Date createdAt = new Date();
+    @NotNull(message = "Date is required")
+    private Date updatedAt = new Date();
+
 }

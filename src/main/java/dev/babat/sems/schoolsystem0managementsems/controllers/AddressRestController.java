@@ -31,7 +31,7 @@ public class AddressRestController {
     }
 
     @PostMapping
-    public ResponseEntity<AddressDto> add(@Valid @RequestBody AddressDto dto) {
+    public ResponseEntity<AddressDto> add(@RequestBody AddressDto dto) {
         var createdAddress = addressService.add(dto);
         return ResponseEntity.status(201).body(createdAddress);
     }

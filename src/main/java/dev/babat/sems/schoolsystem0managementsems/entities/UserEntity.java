@@ -49,6 +49,7 @@ public class UserEntity {
     @Column(nullable = false)
     private Date updatedAt;
 
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_subject",
