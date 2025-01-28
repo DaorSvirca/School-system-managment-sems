@@ -1,6 +1,7 @@
 package dev.babat.sems.schoolsystem0managementsems.services.impls;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.UserDto;
+import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
 import dev.babat.sems.schoolsystem0managementsems.mappers.UserMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.UserRepository;
 import dev.babat.sems.schoolsystem0managementsems.services.UserService;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -51,5 +53,15 @@ public class UserServiceImpl implements UserService {
         var users = userMapper.toEntity(entity);
         var updatedUsers = userRepository.save(users);
         return userMapper.toDto(updatedUsers);
+    }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new RuntimeException("User not found with email: " + email);
+        }
     }
 }
