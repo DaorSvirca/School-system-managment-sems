@@ -5,9 +5,12 @@ import dev.babat.sems.schoolsystem0managementsems.mappers.GroupMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.GroupRepository;
 import dev.babat.sems.schoolsystem0managementsems.services.GroupService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+@Slf4j
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +31,14 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto add(GroupDto entity) {
+        log.info("Received GroupDto: {}", entity);
+
         var groups = groupMapper.toEntity(entity);
+        log.info("Mapped Entity: {}", groups);
+
         var savedGroups = groupRepository.save(groups);
+        log.info("Saved Entity: {}", savedGroups);
+
         return groupMapper.toDto(savedGroups);
     }
 
