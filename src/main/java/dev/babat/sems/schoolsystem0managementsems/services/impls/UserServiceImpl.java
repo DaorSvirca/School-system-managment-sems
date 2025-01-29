@@ -1,11 +1,16 @@
 package dev.babat.sems.schoolsystem0managementsems.services.impls;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.UserDto;
+import dev.babat.sems.schoolsystem0managementsems.entities.AddressEntity;
+import dev.babat.sems.schoolsystem0managementsems.entities.RoleEntity;
 import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
 import dev.babat.sems.schoolsystem0managementsems.mappers.UserMapper;
+import dev.babat.sems.schoolsystem0managementsems.repositories.AddressRepository;
+import dev.babat.sems.schoolsystem0managementsems.repositories.RoleRepository;
 import dev.babat.sems.schoolsystem0managementsems.repositories.UserRepository;
 import dev.babat.sems.schoolsystem0managementsems.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +22,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
+    private final AddressRepository addressRepository;
+
     @Override
     public List<UserDto> findAll() {
         var users = userRepository.findAll();
@@ -24,6 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @EntityGraph(attributePaths = {"roleId", "addressId"})
     public UserDto findById(Long id) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -33,6 +42,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto add(UserDto entity) {
         var users = userMapper.toEntity(entity);
+        RoleEntity role = roleRepository.findById(entity.getRole().getRoleId())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        users.setRoleId(role);
+
+        AddressEntity address = addressRepository.findById(entity.getAddress().getAddressId())
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+
+        users.setAddressId(address);
         var savedUsers = userRepository.save(users);
         return userMapper.toDto(savedUsers);
     }

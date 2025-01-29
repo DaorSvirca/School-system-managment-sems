@@ -33,17 +33,23 @@ public class UserEntity {
     private String phoneNumber;
     @Column(nullable = false)
     private LocalDate birthDate;
+    @Column(nullable = false )
+    @Enumerated(EnumType.STRING)
     private GenderEnum gender;
     @OneToOne( cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private AddressEntity addressId;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id")
     private GroupEntity groupId;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "academic_year_id")
     private AcademicYearEntity academicYearId;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id")
     private RoleEntity roleId;
     @Column(nullable = false)
-    private boolean isActive;
+    private boolean isActive = true;
     @Column(nullable = false)
     private Date createdAt;
     @Column(nullable = false)

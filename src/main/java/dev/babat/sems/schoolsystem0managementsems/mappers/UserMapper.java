@@ -11,6 +11,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+    @Mapping(source = "roleId", target = "role")  // Ensure this is correctly mapping roleId to the role in DTO
+    @Mapping(source = "addressId", target = "address")
     UserDto toDto(UserEntity userEntity);
     UserEntity toEntity(UserDto userDto);
     List<UserDto> toDtoList(List<UserEntity> userEntities);

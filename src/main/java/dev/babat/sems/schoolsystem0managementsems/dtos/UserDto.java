@@ -36,8 +36,6 @@ public class UserDto {
     private AddressDto address;
     @NotNull(message = "Role is required")
     private RoleDto role;
-    @NotNull(message = "Active status is required")
-    private boolean isActive;
     @NotNull(message = "Date is required")
     private Date createdAt = new Date();
     @NotNull(message = "Date is required")

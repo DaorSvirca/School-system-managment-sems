@@ -2,12 +2,14 @@ package dev.babat.sems.schoolsystem0managementsems.controllers;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.UserDto;
 import dev.babat.sems.schoolsystem0managementsems.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserRestController {
@@ -30,6 +32,7 @@ public class UserRestController {
 
     @PostMapping
     public ResponseEntity<UserDto> add(@RequestBody UserDto dto) {
+        log.info("Adding new user", dto);
         var createdUser = userService.add(dto);
         return ResponseEntity.status(201).body(createdUser);
     }
