@@ -17,14 +17,15 @@ public interface UserMapper {
     List<UserEntity> toEntityList(List<UserDto> userDtos);
 
 
-    // Special mappings for StudentDto
     @Mapping(source = "groupId", target = "groupId")
     @Mapping(source = "academicYearId", target = "academicYearId")
     @Mapping(source = "subjects", target = "subjectsId")
     StudentDto toStudentDto(UserEntity userEntity);
 
-    // Special mappings for ProfessorDto
     @Mapping(source = "academicYearId", target = "academicYearId")
     ProfessorDto toProfessorDto(UserEntity userEntity);
+
+    List<StudentDto> toStudentDtoList(List<UserEntity> userEntities);
+    List<ProfessorDto> toProfessorDtoList(List<UserEntity> userEntities);
 
 }
