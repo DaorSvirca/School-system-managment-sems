@@ -48,22 +48,13 @@ public class UserEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private RoleEntity roleId;
+    @OneToOne( cascade = CascadeType.ALL)
+    @JoinColumn(name = "semester_id")
+    private SemesterEntity semesterId;
     @Column(nullable = false)
     private boolean isActive = true;
     @Column(nullable = false)
     private Date createdAt;
     @Column(nullable = false)
     private Date updatedAt;
-
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "user_subject",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id")
-    )
-    private List<SubjectEntity> subjects = new ArrayList<>();
-
-
-
 }

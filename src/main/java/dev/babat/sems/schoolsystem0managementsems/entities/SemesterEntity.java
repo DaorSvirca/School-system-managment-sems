@@ -20,8 +20,8 @@ public class SemesterEntity {
     private long semesterId;
     @Column(nullable = false)
     private String semesterName;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private AcademicYearEntity academicYearId;
+    @Column(nullable = false)
+    private String orientation;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(

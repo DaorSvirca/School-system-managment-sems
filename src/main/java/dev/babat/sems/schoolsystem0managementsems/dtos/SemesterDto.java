@@ -21,10 +21,11 @@ public class SemesterDto {
     @NotNull(message = "Semester name is required")
     @NotBlank(message = "Semester name is required")
     private String semesterName;
-    @NotNull(message = "Semester description is required")
-    @NotBlank(message = "Semester description is required")
-    private AcademicYearDto academicYearId;
+    @NotNull(message = "Group description is required")
+    @NotBlank(message = "Group description is required")
+    private String orientation;
     @NotNull(message = "Semester subjects are required")
     @NotBlank(message = "Semester subjects are required")
     private List<SubjectDto> subjects = new ArrayList<>();
+
 }

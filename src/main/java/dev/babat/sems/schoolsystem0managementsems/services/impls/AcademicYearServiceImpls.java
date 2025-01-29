@@ -1,6 +1,7 @@
 package dev.babat.sems.schoolsystem0managementsems.services.impls;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.AcademicYearDto;
+import dev.babat.sems.schoolsystem0managementsems.entities.AcademicYearEntity;
 import dev.babat.sems.schoolsystem0managementsems.mappers.AcademicYearMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.AcademicYearRepository;
 import dev.babat.sems.schoolsystem0managementsems.services.AcademicYearService;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AcademicYearServiceImpls implements AcademicYearService {
@@ -52,5 +55,11 @@ public class AcademicYearServiceImpls implements AcademicYearService {
         var academicYears = academicYearMapper.toEntity(entity);
         var updatedAcademicYears = academicYearRepository.save(academicYears);
         return academicYearMapper.toDto(updatedAcademicYears);
+    }
+
+    @Override
+    public Optional<AcademicYearEntity> findByIsAcademicYear() {
+        academicYearRepository.findLatestAcademicYear();
+        return Optional.empty();
     }
 }

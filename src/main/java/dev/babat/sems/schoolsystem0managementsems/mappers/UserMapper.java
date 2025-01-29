@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    @Mapping(source = "roleId", target = "role")  // Ensure this is correctly mapping roleId to the role in DTO
+    @Mapping(source = "roleId", target = "role")
     @Mapping(source = "addressId", target = "address")
     UserDto toDto(UserEntity userEntity);
     UserEntity toEntity(UserDto userDto);
@@ -20,8 +20,7 @@ public interface UserMapper {
 
 
     @Mapping(source = "groupId", target = "groupId")
-    @Mapping(source = "academicYearId", target = "academicYearId")
-    @Mapping(source = "subjects", target = "subjectsId")
+    @Mapping(source = "semesterId", target = "semesterId")
     StudentDto toStudentDto(UserEntity userEntity);
 
     @Mapping(source = "academicYearId", target = "academicYearId")

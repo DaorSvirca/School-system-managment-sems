@@ -18,7 +18,5 @@ public class GroupDto {
     @NotNull(message = "Group name is required")
     @NotBlank(message = "Group name is required")
     private String groupName;
-    @NotNull(message = "Group description is required")
-    @NotBlank(message = "Group description is required")
-    private String orientation;
+
 }

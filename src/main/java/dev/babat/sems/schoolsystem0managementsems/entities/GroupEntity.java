@@ -17,8 +17,7 @@ public class GroupEntity {
     private long groupId;
     @Column(nullable = false)
     private String groupName;
-    @Column(nullable = false)
-        private String orientation;
+
 
 
 }

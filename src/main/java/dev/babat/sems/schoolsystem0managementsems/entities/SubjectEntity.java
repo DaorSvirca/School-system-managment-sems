@@ -25,9 +25,6 @@ public class SubjectEntity {
     private int hours;
 
     @ManyToMany(mappedBy = "subjects", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<UserEntity> users = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "subjects", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<SemesterEntity> semesters = new ArrayList<>();
 
 }

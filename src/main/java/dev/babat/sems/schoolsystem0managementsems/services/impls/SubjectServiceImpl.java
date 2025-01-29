@@ -1,19 +1,24 @@
 package dev.babat.sems.schoolsystem0managementsems.services.impls;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.SubjectDto;
+import dev.babat.sems.schoolsystem0managementsems.entities.SemesterEntity;
 import dev.babat.sems.schoolsystem0managementsems.mappers.SubjectMapper;
+import dev.babat.sems.schoolsystem0managementsems.repositories.SemesterRepository;
 import dev.babat.sems.schoolsystem0managementsems.repositories.SubjectRepository;
 import dev.babat.sems.schoolsystem0managementsems.services.SubjectService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SubjectServiceImpl implements SubjectService {
     private final SubjectRepository subjectRepository;
     private final SubjectMapper subjectMapper;
+    private final SemesterRepository semesterRepository;
     @Override
     public List<SubjectDto> findAll() {
         var subjects = subjectRepository.findAll();
@@ -30,6 +35,13 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public SubjectDto add(SubjectDto entity) {
         var subjects = subjectMapper.toEntity(entity);
+
+        List<SemesterEntity> semesters = subjects.getSemesters().stream()
+                .map(semesterDto -> semesterRepository.findById(semesterDto.getSemesterId())
+                        .orElseThrow(() -> new EntityNotFoundException("Semester not found with ID: " + semesterDto.getSemesterId())))
+                .collect(Collectors.toList());
+
+        subjects.setSemesters(semesters);
         var savedSubjects = subjectRepository.save(subjects);
         return subjectMapper.toDto(savedSubjects);
     }
