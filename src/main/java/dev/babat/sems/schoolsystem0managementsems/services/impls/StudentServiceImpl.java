@@ -61,6 +61,7 @@ public class StudentServiceImpl implements StudentService {
         GroupEntity groupEntity = groupRepository.findById(entity.getGroupId().getGroupId())
                 .orElseThrow(() -> new RuntimeException("Group not found"));
         students.setGroupId(groupEntity);
+        groupEntity.getUsers().add(students);
 
        students.setAcademicYearId(academicYearEntity);
 

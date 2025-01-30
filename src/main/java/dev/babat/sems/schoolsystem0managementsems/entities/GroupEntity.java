@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(name = "groups")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +20,6 @@ public class GroupEntity {
     private long groupId;
     @Column(nullable = false)
     private String groupName;
-
-
-
+    @OneToMany(mappedBy = "groupId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserEntity> users = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package dev.babat.sems.schoolsystem0managementsems.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.babat.sems.schoolsystem0managementsems.enums.GenderEnum;
 import jakarta.persistence.*;
@@ -41,9 +42,10 @@ public class UserEntity {
     @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private AddressEntity addressId;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "group_id")
-    private GroupEntity groupId;
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "group_id")
+        @JsonIgnore
+        private GroupEntity groupId;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "academic_year_id")
     private AcademicYearEntity academicYearId;
