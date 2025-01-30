@@ -21,7 +21,6 @@ public class UserDto {
     private String firstName;
     @NotBlank(message = "Last name is required")
     private String lastName;
-    @Email(message = "Email must be a valid")
     @NotBlank(message = "Email is required")
     private String email;
     @NotBlank(message = "Password is required")
