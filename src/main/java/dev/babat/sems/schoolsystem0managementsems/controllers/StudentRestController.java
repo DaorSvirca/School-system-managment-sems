@@ -1,7 +1,9 @@
 package dev.babat.sems.schoolsystem0managementsems.controllers;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.StudentDto;
+import dev.babat.sems.schoolsystem0managementsems.enums.GenderEnum;
 import dev.babat.sems.schoolsystem0managementsems.services.StudentService;
+import dev.babat.sems.schoolsystem0managementsems.services.impls.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,13 @@ import java.util.List;
 public class StudentRestController {
 
     private final StudentService studentService;
+    private final UserServiceImpl userServiceImpl;
 
 
     @Autowired
-    public StudentRestController(StudentService studentService) {
+    public StudentRestController(StudentService studentService, UserServiceImpl userServiceImpl) {
         this.studentService = studentService;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping
@@ -47,6 +51,12 @@ public class StudentRestController {
     public ResponseEntity<Void> removeById(@PathVariable Long id){
         studentService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/gender/{gender}/count")
+    public ResponseEntity<Long> getUserByGender(@PathVariable GenderEnum genderEnum){
+        long count = studentService.getUserCountByGender(genderEnum);
+        return ResponseEntity.ok(count);
     }
 
 
