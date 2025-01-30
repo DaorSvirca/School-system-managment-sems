@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfessorDto extends UserDto {
-    @PositiveOrZero(message = "Professor id must be a positive number")
-    @NotNull
-    @NotBlank
-    private AcademicYearDto academicYearId;
+    @NotNull(message = "Semester subjects are required")
+    @NotBlank(message = "Semester subjects are required")
+    private List<SubjectDto> subjects = new ArrayList<>();
 }

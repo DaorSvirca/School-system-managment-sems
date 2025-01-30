@@ -29,8 +29,4 @@ public class SubjectDto {
     @NotNull(message = "Subject hours is required")
     @NotBlank(message = "Subject hours is required")
     private int hours;
-    @NotNull(message = "Subject semester is required")
-    @NotBlank(message = "Subject semester is required")
-    private List<SemesterDto> semesters = new ArrayList<>();
-
 }

@@ -1,5 +1,6 @@
 package dev.babat.sems.schoolsystem0managementsems.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,12 @@ public class SubjectEntity {
     private int hours;
 
     @ManyToMany(mappedBy = "subjects", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private List<SemesterEntity> semesters = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "subjects", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
+    private List<UserEntity> users = new ArrayList<>();
 
 }
 

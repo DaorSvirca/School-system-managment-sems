@@ -44,4 +44,12 @@ public class SemesterRestController {
         semesterService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{semesterId}/add-subject/{subjectId}")
+    public  ResponseEntity<SemesterDto> addSubject(@PathVariable Long semesterId, @PathVariable Long subjectId){
+        return ResponseEntity.ok(semesterService.addSubject(semesterId, subjectId));
+    }
+    @PutMapping("/{semesterId}/remove-subject/{subjectId}")
+    public  ResponseEntity<SemesterDto> removeSubject(@PathVariable Long semesterId, @PathVariable Long subjectId){
+        return ResponseEntity.ok(semesterService.removeSubject(semesterId, subjectId));
+    }
 }

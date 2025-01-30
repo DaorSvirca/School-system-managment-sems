@@ -40,5 +40,4 @@ public class UserDto {
     private Date createdAt = new Date();
     @NotNull(message = "Date is required")
     private Date updatedAt = new Date();
-
 }

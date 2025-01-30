@@ -23,7 +23,7 @@ public interface UserMapper {
     @Mapping(source = "semesterId", target = "semesterId")
     StudentDto toStudentDto(UserEntity userEntity);
 
-    @Mapping(source = "academicYearId", target = "academicYearId")
+
     ProfessorDto toProfessorDto(UserEntity userEntity);
 
     List<StudentDto> toStudentDtoList(List<UserEntity> userEntities);

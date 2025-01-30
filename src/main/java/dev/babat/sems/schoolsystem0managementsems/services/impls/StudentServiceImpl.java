@@ -48,6 +48,7 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new RuntimeException("Group not found"));
         students.setGroupId(groupEntity);
 
+
        students.setAcademicYearId(academicYearEntity);
         var savedStudents = repository.save(students);
         return mapper.toStudentDto(savedStudents);

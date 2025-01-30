@@ -2,6 +2,7 @@ package dev.babat.sems.schoolsystem0managementsems.services.impls;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.SubjectDto;
 import dev.babat.sems.schoolsystem0managementsems.entities.SemesterEntity;
+import dev.babat.sems.schoolsystem0managementsems.entities.SubjectEntity;
 import dev.babat.sems.schoolsystem0managementsems.mappers.SubjectMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.SemesterRepository;
 import dev.babat.sems.schoolsystem0managementsems.repositories.SubjectRepository;
@@ -42,18 +43,26 @@ public class SubjectServiceImpl implements SubjectService {
                 .collect(Collectors.toList());
 
         subjects.setSemesters(semesters);
+
+        for (SemesterEntity semester : semesters) {
+            semester.getSubjects().add(subjects);
+        }
         var savedSubjects = subjectRepository.save(subjects);
         return subjectMapper.toDto(savedSubjects);
     }
 
     @Override
     public void deleteById(Long id) {
-        if (!subjectRepository.existsById(id)) {
-            throw new RuntimeException("Subject not found");
-        }
-        subjectRepository.deleteById(id);
-    }
+        SubjectEntity subject = subjectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Subject not found"));
 
+        for (SemesterEntity semester : subject.getSemesters()) {
+            semester.getSubjects().remove(subject);
+        }
+        semesterRepository.saveAll(subject.getSemesters());
+
+        subjectRepository.delete(subject);
+    }
     @Override
     public SubjectDto modify(Long id, SubjectDto entity) {
         if (!id.equals(entity.getSubjectId())) {

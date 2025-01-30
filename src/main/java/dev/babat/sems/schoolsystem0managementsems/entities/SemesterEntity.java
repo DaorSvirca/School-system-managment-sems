@@ -1,5 +1,6 @@
 package dev.babat.sems.schoolsystem0managementsems.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class SemesterEntity {
             joinColumns = @JoinColumn(name = "semester_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
+    @JsonIgnore
     private List<SubjectEntity> subjects = new ArrayList<>();
 
 }
