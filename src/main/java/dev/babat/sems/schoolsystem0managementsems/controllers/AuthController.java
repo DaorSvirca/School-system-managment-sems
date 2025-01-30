@@ -3,6 +3,8 @@ package dev.babat.sems.schoolsystem0managementsems.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.babat.sems.schoolsystem0managementsems.dtos.LoginDto;
 import dev.babat.sems.schoolsystem0managementsems.dtos.UserCookieDto;
+import dev.babat.sems.schoolsystem0managementsems.dtos.UserDto;
+import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
 import dev.babat.sems.schoolsystem0managementsems.services.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletResponse response) throws BadRequestException {
+    public ResponseEntity<UserEntity> login(@RequestBody LoginDto loginDto, HttpServletResponse response) throws BadRequestException {
         var user = authService.authenticateUser(loginDto);
         if (user == null) {
             throw new RuntimeException("Invalid credentials");
@@ -45,7 +47,7 @@ public class AuthController {
             response.addCookie(cookie);
         }
 
-        return ResponseEntity.ok("Login successful");
+        return ResponseEntity.ok(user);
     }
 
 }
