@@ -35,6 +35,11 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public SubjectDto add(SubjectDto entity) {
+
+        if (subjectRepository.existsBySubjectName(entity.getSubjectName())) {
+            throw new RuntimeException("Subject with name '" + entity.getSubjectName() + "' already exists.");
+        }
+
         var subjects = subjectMapper.toEntity(entity);
 
         List<SemesterEntity> semesters = subjects.getSemesters().stream()
@@ -72,4 +77,6 @@ public class SubjectServiceImpl implements SubjectService {
         var updatedSubjects = subjectRepository.save(subjects);
         return subjectMapper.toDto(updatedSubjects);
     }
+
+
 }

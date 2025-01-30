@@ -9,9 +9,11 @@ import dev.babat.sems.schoolsystem0managementsems.mappers.UserMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.AddressRepository;
 import dev.babat.sems.schoolsystem0managementsems.repositories.RoleRepository;
 import dev.babat.sems.schoolsystem0managementsems.repositories.UserRepository;
+import dev.babat.sems.schoolsystem0managementsems.security.SecurityConfig;
 import dev.babat.sems.schoolsystem0managementsems.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final AddressRepository addressRepository;
+    private final SecurityConfig securityConfig;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> findAll() {
@@ -42,17 +46,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto add(UserDto entity) {
-        var users = userMapper.toEntity(entity);
+
+
+        var user = userMapper.toEntity(entity);
+
+        user.setPassword(passwordEncoder.encode(entity.getPassword()));
+
         RoleEntity role = roleRepository.findById(entity.getRoleId().getRoleId())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
-        users.setRoleId(role);
+        user.setRoleId(role);
 
         AddressEntity address = addressRepository.findById(entity.getAddressId().getAddressId())
                 .orElseThrow(() -> new RuntimeException("Address not found"));
 
-        users.setAddressId(address);
-        var savedUsers = userRepository.save(users);
+        user.setAddressId(address);
+        var savedUsers = userRepository.save(user);
         return userMapper.toDto(savedUsers);
     }
 

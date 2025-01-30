@@ -3,6 +3,7 @@ package dev.babat.sems.schoolsystem0managementsems.services.impls;
 import dev.babat.sems.schoolsystem0managementsems.dtos.CreateUserDto;
 import dev.babat.sems.schoolsystem0managementsems.dtos.LoginDto;
 import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
+import dev.babat.sems.schoolsystem0managementsems.security.SecurityConfig;
 import dev.babat.sems.schoolsystem0managementsems.services.AuthService;
 import dev.babat.sems.schoolsystem0managementsems.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final UserService userService;
+    private final SecurityConfig securityConfig;
 
 
     @Override

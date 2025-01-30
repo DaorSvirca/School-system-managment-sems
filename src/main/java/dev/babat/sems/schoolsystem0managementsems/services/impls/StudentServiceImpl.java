@@ -11,6 +11,7 @@ import dev.babat.sems.schoolsystem0managementsems.repositories.*;
 import dev.babat.sems.schoolsystem0managementsems.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class StudentServiceImpl implements StudentService {
     private final SemesterRepository semesterRepository;
     private  final RoleRepository roleRepository;
     private  final AddressRepository addressRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<StudentDto> findAll() {
@@ -43,6 +45,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDto add(StudentDto entity) {
         var students = mapper.toEntity(entity);
+
+        students.setPassword(passwordEncoder.encode(entity.getPassword()));
+
         AcademicYearEntity academicYearEntity = academicYearRepository.findLatestAcademicYear()
                 .orElseThrow(() -> new RuntimeException("Academic year not found"));
 

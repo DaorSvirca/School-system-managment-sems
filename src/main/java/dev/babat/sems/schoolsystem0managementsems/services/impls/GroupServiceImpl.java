@@ -32,6 +32,11 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto add(GroupDto entity) {
+
+        if (groupRepository.existsByGroupName(entity.getGroupName())) {
+            throw new RuntimeException( "Group with name '" + entity.getGroupName() + "' already exists.");
+        }
+
         var groups = groupMapper.toEntity(entity);
         var savedGroups = groupRepository.save(groups);
         return groupMapper.toDto(savedGroups);

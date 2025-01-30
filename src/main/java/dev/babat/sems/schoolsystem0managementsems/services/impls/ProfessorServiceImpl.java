@@ -5,6 +5,7 @@ import dev.babat.sems.schoolsystem0managementsems.mappers.UserMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.UserRepository;
 import dev.babat.sems.schoolsystem0managementsems.services.ProfessorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public class ProfessorServiceImpl implements ProfessorService {
     private final UserRepository repository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<ProfessorDto> findAll() {
@@ -31,6 +33,9 @@ public class ProfessorServiceImpl implements ProfessorService {
     @Override
     public ProfessorDto add(ProfessorDto entity) {
         var professors = mapper.toEntity(entity);
+
+        professors.setPassword(passwordEncoder.encode(entity.getPassword()));
+
         var savedProfessors = repository.save(professors);
         return mapper.toProfessorDto(savedProfessors);
     }
