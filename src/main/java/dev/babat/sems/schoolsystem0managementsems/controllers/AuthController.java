@@ -6,6 +6,7 @@ import dev.babat.sems.schoolsystem0managementsems.dtos.UserCookieDto;
 import dev.babat.sems.schoolsystem0managementsems.services.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletResponse response) throws BadRequestException {
         var user = authService.authenticateUser(loginDto);
         if (user == null) {
             throw new RuntimeException("Invalid credentials");

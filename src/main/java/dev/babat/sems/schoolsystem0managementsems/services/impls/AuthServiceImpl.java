@@ -7,6 +7,7 @@ import dev.babat.sems.schoolsystem0managementsems.security.SecurityConfig;
 import dev.babat.sems.schoolsystem0managementsems.services.AuthService;
 import dev.babat.sems.schoolsystem0managementsems.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final SecurityConfig securityConfig;
+
 
 
     @Override
@@ -27,13 +29,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserEntity authenticateUser(LoginDto loginDto) {
+    public UserEntity authenticateUser(LoginDto loginDto) throws BadRequestException {
         var user = userService.findByEmail(loginDto.getEmail());
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new BadRequestException("User not found");
         }
-        if (!user.getPassword().equals(loginDto.getPassword())) {
-            throw new RuntimeException("Invalid password");
+        if (!securityConfig.passwordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
+            throw new BadRequestException("Invalid password");
         }
         return user;
 
