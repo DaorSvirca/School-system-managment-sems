@@ -1,14 +1,9 @@
 package dev.babat.sems.schoolsystem0managementsems.services.impls;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.StudentDto;
-import dev.babat.sems.schoolsystem0managementsems.entities.AcademicYearEntity;
-import dev.babat.sems.schoolsystem0managementsems.entities.GroupEntity;
-import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
+import dev.babat.sems.schoolsystem0managementsems.entities.*;
 import dev.babat.sems.schoolsystem0managementsems.mappers.UserMapper;
-import dev.babat.sems.schoolsystem0managementsems.repositories.AcademicYearRepository;
-import dev.babat.sems.schoolsystem0managementsems.repositories.GroupRepository;
-import dev.babat.sems.schoolsystem0managementsems.repositories.SemesterRepository;
-import dev.babat.sems.schoolsystem0managementsems.repositories.UserRepository;
+import dev.babat.sems.schoolsystem0managementsems.repositories.*;
 import dev.babat.sems.schoolsystem0managementsems.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +20,8 @@ public class StudentServiceImpl implements StudentService {
     private  final AcademicYearRepository academicYearRepository;
     private  final GroupRepository groupRepository;
     private final SemesterRepository semesterRepository;
+    private  final RoleRepository roleRepository;
+    private  final AddressRepository addressRepository;
 
     @Override
     public List<StudentDto> findAll() {
@@ -56,8 +53,17 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new RuntimeException("Group not found"));
         students.setGroupId(groupEntity);
 
-
        students.setAcademicYearId(academicYearEntity);
+
+        RoleEntity role = roleRepository.findById(entity.getRoleId().getRoleId())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        students.setRoleId(role);
+
+        AddressEntity address = addressRepository.findById(entity.getAddressId().getAddressId())
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+
+        students.setAddressId(address);
         var savedStudents = repository.save(students);
         return mapper.toStudentDto(savedStudents);
     }

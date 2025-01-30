@@ -33,9 +33,9 @@ public class UserDto {
     @Enumerated(jakarta.persistence.EnumType.STRING)
     private GenderEnum gender;
     @NotNull(message = "Address is required")
-    private AddressDto address;
+    private AddressDto addressId;
     @NotNull(message = "Role is required")
-    private RoleDto role;
+    private RoleDto roleId;
     @NotNull(message = "Date is required")
     private Date createdAt = new Date();
     @NotNull(message = "Date is required")

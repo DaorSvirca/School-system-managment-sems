@@ -42,12 +42,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto add(UserDto entity) {
         var users = userMapper.toEntity(entity);
-        RoleEntity role = roleRepository.findById(entity.getRole().getRoleId())
+        RoleEntity role = roleRepository.findById(entity.getRoleId().getRoleId())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         users.setRoleId(role);
 
-        AddressEntity address = addressRepository.findById(entity.getAddress().getAddressId())
+        AddressEntity address = addressRepository.findById(entity.getAddressId().getAddressId())
                 .orElseThrow(() -> new RuntimeException("Address not found"));
 
         users.setAddressId(address);

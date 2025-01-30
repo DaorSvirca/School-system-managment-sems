@@ -12,8 +12,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
 
     @Override
-    @EntityGraph(attributePaths = {"roleId", "addressId"})
+    @EntityGraph(attributePaths = {"addressId", "roleId", "groupId", "semesterId", "academicYearId"})
     Optional<UserEntity> findById(Long id);
-
-
 }

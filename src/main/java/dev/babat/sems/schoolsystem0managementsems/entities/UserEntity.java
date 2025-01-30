@@ -1,5 +1,6 @@
 package dev.babat.sems.schoolsystem0managementsems.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.babat.sems.schoolsystem0managementsems.enums.GenderEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +38,7 @@ public class UserEntity {
     @Column(nullable = false )
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
-    @OneToOne( cascade = CascadeType.ALL)
+    @OneToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private AddressEntity addressId;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -45,7 +47,7 @@ public class UserEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "academic_year_id")
     private AcademicYearEntity academicYearId;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity roleId;
     @OneToOne( cascade = CascadeType.ALL)
