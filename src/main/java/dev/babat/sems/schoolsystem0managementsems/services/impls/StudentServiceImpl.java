@@ -1,14 +1,11 @@
 package dev.babat.sems.schoolsystem0managementsems.services.impls;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.StudentDto;
-<<<<<<< Updated upstream
 import dev.babat.sems.schoolsystem0managementsems.entities.*;
-=======
 import dev.babat.sems.schoolsystem0managementsems.entities.AcademicYearEntity;
 import dev.babat.sems.schoolsystem0managementsems.entities.GroupEntity;
 import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
 import dev.babat.sems.schoolsystem0managementsems.enums.GenderEnum;
->>>>>>> Stashed changes
 import dev.babat.sems.schoolsystem0managementsems.mappers.UserMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.*;
 import dev.babat.sems.schoolsystem0managementsems.services.StudentService;

@@ -15,12 +15,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Override
     @EntityGraph(attributePaths = {"addressId", "roleId", "groupId", "semesterId", "academicYearId"})
     Optional<UserEntity> findById(Long id);
-<<<<<<< Updated upstream
-=======
+
 
 
     long countByGender(GenderEnum genderEnum);
 
 
->>>>>>> Stashed changes
 }

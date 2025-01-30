@@ -38,7 +38,7 @@ public class UserEntity {
     @Column(nullable = false )
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
-    @OneToOne( fetch = FetchType.EAGER)
+    @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private AddressEntity addressId;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -50,7 +50,7 @@ public class UserEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity roleId;
-    @OneToOne( cascade = CascadeType.ALL)
+    @ManyToOne( cascade = CascadeType.ALL)
     @JoinColumn(name = "semester_id")
     private SemesterEntity semesterId;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
