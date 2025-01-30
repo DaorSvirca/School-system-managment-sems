@@ -2,6 +2,7 @@ package dev.babat.sems.schoolsystem0managementsems.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dev.babat.sems.schoolsystem0managementsems.dtos.GroupDto;
 import dev.babat.sems.schoolsystem0managementsems.enums.GenderEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,11 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-    @Entity(name = "users")
+@Entity(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
