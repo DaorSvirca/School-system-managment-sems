@@ -21,4 +21,8 @@ public class StudentDto extends UserDto {
     @NotNull(message = "Student id is required")
     @NotBlank(message = "Student id is required")
     private SemesterDto semesterId;
+    @PositiveOrZero(message = "Student id must be a positive number")
+    @NotNull(message = "Student id is required")
+    @NotBlank(message = "Student id is required")
+    private AcademicYearDto academicYearId;
 }

@@ -3,9 +3,11 @@ package dev.babat.sems.schoolsystem0managementsems.services.impls;
 import dev.babat.sems.schoolsystem0managementsems.dtos.StudentDto;
 import dev.babat.sems.schoolsystem0managementsems.entities.AcademicYearEntity;
 import dev.babat.sems.schoolsystem0managementsems.entities.GroupEntity;
+import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
 import dev.babat.sems.schoolsystem0managementsems.mappers.UserMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.AcademicYearRepository;
 import dev.babat.sems.schoolsystem0managementsems.repositories.GroupRepository;
+import dev.babat.sems.schoolsystem0managementsems.repositories.SemesterRepository;
 import dev.babat.sems.schoolsystem0managementsems.repositories.UserRepository;
 import dev.babat.sems.schoolsystem0managementsems.services.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class StudentServiceImpl implements StudentService {
     private final UserMapper mapper;
     private  final AcademicYearRepository academicYearRepository;
     private  final GroupRepository groupRepository;
+    private final SemesterRepository semesterRepository;
 
     @Override
     public List<StudentDto> findAll() {
@@ -41,8 +44,13 @@ public class StudentServiceImpl implements StudentService {
         var students = mapper.toEntity(entity);
         AcademicYearEntity academicYearEntity = academicYearRepository.findLatestAcademicYear()
                 .orElseThrow(() -> new RuntimeException("Academic year not found"));
+
        log.info("Academic year entity: {}", academicYearEntity);
        students.setAcademicYearId(academicYearEntity);
+
+       var semester = semesterRepository.findById(entity.getSemesterId().getSemesterId())
+               .orElseThrow(() -> new RuntimeException("Semester not found"));
+       students.setSemesterId(semester);
 
         GroupEntity groupEntity = groupRepository.findById(entity.getGroupId().getGroupId())
                 .orElseThrow(() -> new RuntimeException("Group not found"));
@@ -59,8 +67,15 @@ public class StudentServiceImpl implements StudentService {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Student not found");
         }
-        repository.deleteById(id);
+        UserEntity student = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+        student.setRoleId(null);
+        student.setGroupId(null);
+        student.setSemesterId(null);
+        student.setAcademicYearId(null);
+        repository.save(student);
 
+        repository.deleteById(id);
     }
 
     @Override

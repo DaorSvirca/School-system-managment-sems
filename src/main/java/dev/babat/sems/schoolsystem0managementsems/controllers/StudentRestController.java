@@ -2,6 +2,8 @@ package dev.babat.sems.schoolsystem0managementsems.controllers;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.StudentDto;
 import dev.babat.sems.schoolsystem0managementsems.services.StudentService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ public class StudentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDto> add(@RequestBody StudentDto dto){
+    public ResponseEntity<StudentDto> add(@RequestBody StudentDto dto , HttpServletRequest request){
         var createdStudent = studentService.add(dto);
         return ResponseEntity.status(201).body(createdStudent);
     }
