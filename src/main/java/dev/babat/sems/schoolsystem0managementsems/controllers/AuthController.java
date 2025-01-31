@@ -7,6 +7,7 @@ import dev.babat.sems.schoolsystem0managementsems.dtos.UserDto;
 import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
 import dev.babat.sems.schoolsystem0managementsems.services.AuthService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,26 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        // Get all cookies from the request
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                // Clear each cookie
+                cookie.setValue(null);
+                cookie.setHttpOnly(true);
+                cookie.setSecure(true); // Set to true in a secure environment
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                cookie.setAttribute("SameSite", "None");
+                response.addCookie(cookie);
+            }
+        }
+
+        return ResponseEntity.ok("Logged out successfully");
     }
 }
