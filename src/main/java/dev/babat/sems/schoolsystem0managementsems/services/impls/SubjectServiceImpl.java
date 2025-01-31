@@ -61,11 +61,13 @@ public class SubjectServiceImpl implements SubjectService {
         SubjectEntity subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Subject not found"));
 
-        subject.setSemesters(null);
 
         for (SemesterEntity semester : subject.getSemesters()) {
-            semester.getSubjects().remove(subject);
-        }
+            if (semester.getSubjects() != null) {
+                semester.getSubjects().remove(subject);
+                semesterRepository.save(semester);
+            }
+            }
         semesterRepository.saveAll(subject.getSemesters());
 
         subjectRepository.delete(subject);
