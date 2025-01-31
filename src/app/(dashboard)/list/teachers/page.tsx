@@ -14,8 +14,8 @@ import axiosInstance from "@/store/axiosInstance";
 import { getUser } from "@/store/userHelper";
 import Image from "next/image";
 import Link from "next/link";
-import AddTeacherModal from "../../admin/_components/add-teacher-modal"; 
-import DeleteTeacherModal from "./_components/delete-teacher-moda"; 
+import AddTeacherModal from "../../admin/_components/add-teacher-modal";
+import DeleteTeacherModal from "./_components/delete-teacher-moda";
 
 type Teacher = {
   userId: number;
@@ -62,7 +62,7 @@ const TeacherListPage = () => {
       {/* ✅ Header Section */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-semibold text-gray-800">All Teachers</h1>
-        {role === "admin" || role === "SUPER_ADMIN" ? (
+        {role === "ADMIN" || role === "SUPER_ADMIN" ? (
           <Button color="primary" onPress={() => setIsModalOpen(true)}>
             ➕ Add Teacher
           </Button>
@@ -70,7 +70,7 @@ const TeacherListPage = () => {
       </div>
 
       {/* ✅ Add Teacher Modal (With fetchTeachers) */}
-      {role === "admin" || role == "SUPER_ADMIN" ? (
+      {role === "ADMIN" || role == "SUPER_ADMIN" ? (
         <AddTeacherModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -155,7 +155,7 @@ const TeacherListPage = () => {
                         View
                       </Button>
                     </Link>
-                    {role === "admin" || role === "SUPER_ADMIN" ? (
+                    {role === "ADMIN" || role === "SUPER_ADMIN" ? (
                       <>
                         <Button size="sm" color="warning">
                           Edit

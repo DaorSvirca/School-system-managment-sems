@@ -42,7 +42,6 @@ const StudentListPage = () => {
     fetchStudents();
   }, []);
 
-
   const fetchStudents = async () => {
     try {
       const user = await getUser();
@@ -59,22 +58,20 @@ const StudentListPage = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg flex-1 mx-4">
-   
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-semibold text-gray-800">All Students</h1>
-        {role === "admin" || role === "SUPER_ADMIN" ? (
+        {role === "ADMIN" || role === "SUPER_ADMIN" ? (
           <Button color="primary" onPress={() => setIsModalOpen(true)}>
             ➕ Add Student
           </Button>
         ) : null}
       </div>
 
-    
-      {role === "admin" || role === "SUPER_ADMIN" ? (
+      {role === "ADMIN" || role === "SUPER_ADMIN" ? (
         <AddStudentModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          refreshStudents={fetchStudents} 
+          refreshStudents={fetchStudents}
         />
       ) : null}
 
@@ -83,7 +80,7 @@ const StudentListPage = () => {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         studentId={selectedStudentId}
-        refreshStudents={fetchStudents} 
+        refreshStudents={fetchStudents}
       />
 
       {/* ✅ Loading State */}
@@ -105,39 +102,32 @@ const StudentListPage = () => {
           <TableBody>
             {students.map((student) => (
               <TableRow key={student.userId} className="text-sm">
-              
                 <TableCell>
                   {student.firstName} {student.lastName}
                 </TableCell>
 
-            
                 <TableCell>{student.email}</TableCell>
 
-            
                 <TableCell>
                   <Badge color="primary">
                     {student.groupId?.groupName || "N/A"}
                   </Badge>
                 </TableCell>
 
-            
                 <TableCell>
                   <Badge color="success">
                     {student.semesterId?.semesterName || "N/A"}
                   </Badge>
                 </TableCell>
 
-        
                 <TableCell>
                   <Badge color="warning">
                     {student.academicYearId?.academicYear || "N/A"}
                   </Badge>
                 </TableCell>
 
-       
                 <TableCell>{student.gender}</TableCell>
 
-         
                 <TableCell>
                   <div className="flex gap-2">
                     <Link href={`/list/students/${student.userId}`}>
@@ -145,7 +135,7 @@ const StudentListPage = () => {
                         View
                       </Button>
                     </Link>
-                    {role === "admin" || role === "SUPER_ADMIN" ? (
+                    {role === "ADMIN" || role === "SUPER_ADMIN" ? (
                       <>
                         <Button size="sm" color="warning">
                           Edit

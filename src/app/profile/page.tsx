@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import axios from "axios";
 import { getUser } from "@/store/userHelper";
 import { Spinner, Button } from "@heroui/react";
 
@@ -11,23 +12,34 @@ export default function ProfilePage() {
   const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // ✅ New logout function that calls the backend logout endpoint
+  const handleLogout = async () => {
+    try {
+      // 1) Call the backend /logout
+      //    Make sure we send credentials so it can remove the HttpOnly cookies
+      await axios.post("http://localhost:8080/api/v1/auth/logout", null, {
+        withCredentials: true,
+      });
 
-  const handleLogout = () => {
- 
-    Cookies.remove("userId");
-    Cookies.remove("userEmail");
-    Cookies.remove("roleId");
-    Cookies.remove("userRole");
+      // 2) Remove front-end cookies
+      Cookies.remove("userId");
+      Cookies.remove("userEmail");
+      Cookies.remove("roleId");
+      Cookies.remove("userRole");
 
-    
-    router.push("/login");
+      // 3) Redirect to login
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout Error:", error);
+      // Optional: show a toast or message if logout fails
+    }
   };
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const currentUser = await getUser();
       if (!currentUser) {
-     
+        // Not authenticated → go to login
         router.push("/login");
         return;
       }
@@ -47,7 +59,7 @@ export default function ProfilePage() {
   }
 
   if (!user) {
-    return null; 
+    return null;
   }
 
   return (
