@@ -108,4 +108,6 @@ public class StudentServiceImpl implements StudentService {
     public long getUserCountByGender(GenderEnum genderEnum) {
         return repository.countByGender(genderEnum);
     }
+
+
 }

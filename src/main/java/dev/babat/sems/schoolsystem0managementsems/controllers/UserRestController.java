@@ -1,6 +1,7 @@
 package dev.babat.sems.schoolsystem0managementsems.controllers;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.UserDto;
+import dev.babat.sems.schoolsystem0managementsems.enums.RoleNameEnum;
 import dev.babat.sems.schoolsystem0managementsems.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,9 @@ public class UserRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/role/{role}")
+    public ResponseEntity<List<UserDto>> getUserByRole(@PathVariable RoleNameEnum role){
+        return ResponseEntity.ok(userService.findByRoleId(role));
+    }
 
 }

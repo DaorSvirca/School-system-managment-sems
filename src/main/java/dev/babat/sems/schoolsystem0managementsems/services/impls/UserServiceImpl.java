@@ -1,10 +1,11 @@
 package dev.babat.sems.schoolsystem0managementsems.services.impls;
 
+import dev.babat.sems.schoolsystem0managementsems.dtos.StudentDto;
 import dev.babat.sems.schoolsystem0managementsems.dtos.UserDto;
 import dev.babat.sems.schoolsystem0managementsems.entities.AddressEntity;
 import dev.babat.sems.schoolsystem0managementsems.entities.RoleEntity;
 import dev.babat.sems.schoolsystem0managementsems.entities.UserEntity;
-import dev.babat.sems.schoolsystem0managementsems.enums.GenderEnum;
+import dev.babat.sems.schoolsystem0managementsems.enums.RoleNameEnum;
 import dev.babat.sems.schoolsystem0managementsems.mappers.UserMapper;
 import dev.babat.sems.schoolsystem0managementsems.repositories.AddressRepository;
 import dev.babat.sems.schoolsystem0managementsems.repositories.RoleRepository;
@@ -92,5 +93,12 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User not found with email: " + email);
         }
     }
+
+    @Override
+    public List<UserDto> findByRoleId(RoleNameEnum role) {
+        List<UserEntity> users = userRepository.findByRoleName(role);
+        return userMapper.toDtoList(users);
+    }
+
 
 }

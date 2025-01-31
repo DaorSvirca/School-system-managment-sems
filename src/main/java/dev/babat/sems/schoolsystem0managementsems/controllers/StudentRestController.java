@@ -2,6 +2,7 @@ package dev.babat.sems.schoolsystem0managementsems.controllers;
 
 import dev.babat.sems.schoolsystem0managementsems.dtos.StudentDto;
 import dev.babat.sems.schoolsystem0managementsems.enums.GenderEnum;
+import dev.babat.sems.schoolsystem0managementsems.enums.RoleNameEnum;
 import dev.babat.sems.schoolsystem0managementsems.services.StudentService;
 import dev.babat.sems.schoolsystem0managementsems.services.impls.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,6 +59,7 @@ public class StudentRestController {
         long count = studentService.getUserCountByGender(genderEnum);
         return ResponseEntity.ok(count);
     }
+
 
 
 }
