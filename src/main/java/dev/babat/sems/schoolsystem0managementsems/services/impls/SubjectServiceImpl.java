@@ -61,6 +61,8 @@ public class SubjectServiceImpl implements SubjectService {
         SubjectEntity subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Subject not found"));
 
+        subject.setSemesters(null);
+
         for (SemesterEntity semester : subject.getSemesters()) {
             semester.getSubjects().remove(subject);
         }
@@ -77,6 +79,7 @@ public class SubjectServiceImpl implements SubjectService {
         var updatedSubjects = subjectRepository.save(subjects);
         return subjectMapper.toDto(updatedSubjects);
     }
+
 
 
 }
