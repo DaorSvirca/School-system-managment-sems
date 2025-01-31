@@ -25,7 +25,7 @@ const SubjectPage = () => {
   const [loading, setLoading] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [userRole, setUserRole] = useState<string | null>(null); // ✅ Track user role
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
     fetchSubject();
@@ -71,7 +71,6 @@ const SubjectPage = () => {
         <p className="text-center text-gray-200">Loading subject...</p>
       ) : subject ? (
         <>
-         
           <h1 className="text-4xl font-extrabold text-white tracking-wide">
             {subject.subjectName}
           </h1>
@@ -86,29 +85,25 @@ const SubjectPage = () => {
             </span>
           </div>
 
-      
-          {userRole === "ADMIN" ||
-            (userRole === "SUPER_ADMIN" && (
-              <div className="mt-6 flex gap-4">
-          
-                <Button
-                  onPress={() => setIsUpdateModalOpen(true)}
-                  className="flex items-center gap-2 bg-transparent text-white px-5 py-2 rounded-lg shadow-md hover:scale-100 hover:bg-blue-400 transition-transform"
-                >
-                  <PencilIcon className="w-5 h-5" />
-                  Edit
-                </Button>
+          {userRole == "ADMIN" && (
+            <div className="mt-6 flex gap-4">
+              <Button
+                onPress={() => setIsUpdateModalOpen(true)}
+                className="flex items-center gap-2 bg-transparent text-white px-5 py-2 rounded-lg shadow-md hover:scale-100 hover:bg-blue-400 transition-transform"
+              >
+                <PencilIcon className="w-5 h-5" />
+                Edit
+              </Button>
 
-            
-                <Button
-                  onPress={() => setIsDeleteModalOpen(true)}
-                  className="flex items-center gap-2 bg-transparent text-white px-5 py-2 rounded-lg shadow-md hover:scale-100 hover:bg-red-600 transition-transform"
-                >
-                  <TrashIcon className="w-5 h-5" />
-                  Delete
-                </Button>
-              </div>
-            ))}
+              <Button
+                onPress={() => setIsDeleteModalOpen(true)}
+                className="flex items-center gap-2 bg-transparent text-white px-5 py-2 rounded-lg shadow-md hover:scale-100 hover:bg-red-600 transition-transform"
+              >
+                <TrashIcon className="w-5 h-5" />
+                Delete
+              </Button>
+            </div>
+          )}
         </>
       ) : (
         <p className="text-center text-red-400 text-lg font-semibold">
@@ -116,7 +111,6 @@ const SubjectPage = () => {
         </p>
       )}
 
-   
       <DeleteSubjectModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
@@ -129,7 +123,7 @@ const SubjectPage = () => {
           isOpen={isUpdateModalOpen}
           onClose={() => setIsUpdateModalOpen(false)}
           subjectId={subject.subjectId}
-          onSuccess={fetchSubject} 
+          onSuccess={fetchSubject}
         />
       )}
     </div>
