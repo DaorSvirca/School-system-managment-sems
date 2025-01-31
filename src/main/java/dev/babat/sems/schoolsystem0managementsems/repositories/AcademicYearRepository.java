@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface AcademicYearRepository extends JpaRepository<AcademicYearEntity, Long> {
 
-    @Query("SELECT a FROM academic_year a ORDER BY a.academicYearId DESC")
+    @Query("SELECT a FROM academic_year a ORDER BY a.academicYearId DESC LIMIT 1")
     Optional<AcademicYearEntity> findLatestAcademicYear();
 }
