@@ -25,7 +25,7 @@ const DeleteSubjectModal: React.FC<DeleteClassModalProps> = ({
       backdrop="blur"
       placement="center"
     >
-      <ModalContent className=" rounded-3xl bg-white ">
+      <ModalContent className=" rounded-3xl p-4 bg-gray-200 h-[30%] ">
         <ModalHeader>Confirm Deletion</ModalHeader>
         <ModalBody>
           <p>Are you sure you want to delete this subject</p>

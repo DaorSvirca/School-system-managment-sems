@@ -63,7 +63,7 @@ const AddClassModal: React.FC<AddClassModalProps> = ({
       backdrop="blur"
       placement="center"
     >
-      <ModalContent>
+      <ModalContent className="p-4 bg-gray-50 rounded-3xl">
         <ModalHeader className="text-center">Add New Class</ModalHeader>
         <ModalBody>
           <FormProvider {...methods}>

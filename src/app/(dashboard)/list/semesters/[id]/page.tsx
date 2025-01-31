@@ -97,7 +97,7 @@ const SemesterPage = () => {
         <p className="text-center text-gray-500">Loading semester...</p>
       ) : semester ? (
         <>
-          {/* SEMESTER HEADER */}
+
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
@@ -111,19 +111,20 @@ const SemesterPage = () => {
               </p>
             </div>
 
-            {/* ✅ Show Add Subject Button Only for Admins */}
-            {userRole === "ADMIN" && (
-              <Button
-                onPress={() => setIsModalOpen(true)}
-                className="flex items-center gap-2 bg-gray-50 text-black px-5 py-2 rounded-lg shadow-lg hover:scale-105 transition-all"
-              >
-                <PlusIcon className="w-5 h-5" />
-                Add Subject
-              </Button>
-            )}
+       
+            {userRole === "ADMIN" ||
+              (userRole === "SUPER_ADMIN" && (
+                <Button
+                  onPress={() => setIsModalOpen(true)}
+                  className="flex items-center gap-2 bg-gray-50 text-black px-5 py-2 rounded-lg shadow-lg hover:scale-105 transition-all"
+                >
+                  <PlusIcon className="w-5 h-5" />
+                  Add Subject
+                </Button>
+              ))}
           </div>
 
-          {/* SUBJECT LIST */}
+   
           <div className="mt-8">
             <h2 className="text-2xl font-semibold text-gray-800">Subjects</h2>
             {semester.subjects.length > 0 ? (

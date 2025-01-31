@@ -53,7 +53,7 @@ const EditClassModal: React.FC<EditClassModalProps> = ({
       backdrop="blur"
       placement="center"
     >
-      <ModalContent>
+      <ModalContent className="h-[30%] p-4 bg-gray-200 rounded-3xl">
         <ModalHeader>Edit Class</ModalHeader>
         <ModalBody>
           <FormProvider {...methods}>

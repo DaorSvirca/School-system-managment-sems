@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ Import Next.js router
+import { useRouter } from "next/navigation"; 
 import axiosInstance from "@/store/axiosInstance";
 import { Button } from "@nextui-org/react";
 import { getUser } from "@/store/userHelper";
@@ -16,8 +16,8 @@ const SemestersListPage = () => {
   const [semesters, setSemesters] = useState<SemesterType[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const router = useRouter(); // ✅ Initialize router
-  const [userRole, setUserRole] = useState<string | null>(null); // ✅ Track user role
+  const router = useRouter(); 
+  const [userRole, setUserRole] = useState<string | null>(null); 
 
   const fetchSemesters = async () => {
     setLoading(true);
@@ -45,7 +45,7 @@ const SemestersListPage = () => {
 
   return (
     <div className="bg-white p-6 rounded-md flex-1 m-4 mt-0 ">
-      {/* HEADER */}
+    
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-lg font-semibold text-gray-800">All Semesters</h1>
         {userRole === "ADMIN" && (
@@ -55,7 +55,7 @@ const SemestersListPage = () => {
         )}
       </div>
 
-      {/* SEMESTER GRID */}
+  
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           <p className="text-center text-gray-500">Loading semesters...</p>

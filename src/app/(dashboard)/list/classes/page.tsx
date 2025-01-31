@@ -58,11 +58,11 @@ const ClassListPage = () => {
         )}
       </div>
 
-      {/* ADD CLASS MODAL */}
+
       <AddClassModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSuccess={fetchGroups} // Refresh the list after adding a group
+        onSuccess={fetchGroups} 
       />
     </div>
   );

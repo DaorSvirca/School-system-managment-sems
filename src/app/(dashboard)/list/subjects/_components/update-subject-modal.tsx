@@ -49,7 +49,7 @@ const UpdateSubjectModal: React.FC<UpdateSubjectModalProps> = ({
 
   const [loading, setLoading] = useState(false);
 
-  // Fetch subject details when modal opens
+
   useEffect(() => {
     const fetchSubjectDetails = async () => {
       if (!subjectId) return;
@@ -57,7 +57,7 @@ const UpdateSubjectModal: React.FC<UpdateSubjectModalProps> = ({
         const response = await axiosInstance.get(
           `/api/v1/subjects/${subjectId}`
         );
-        methods.reset(response.data); // Set form values
+        methods.reset(response.data);
       } catch (error) {
         toast.error("Failed to fetch subject details");
         console.error("Error fetching subject:", error);
@@ -75,14 +75,14 @@ const UpdateSubjectModal: React.FC<UpdateSubjectModalProps> = ({
     try {
       setLoading(true);
 
-      // ✅ Ensure the request body contains the correct `subjectId`
+ 
       const requestData = { ...data, subjectId };
 
       await axiosInstance.put(`/api/v1/subjects/${subjectId}`, requestData);
 
       toast.success("Subject updated successfully! 🎉");
       onClose();
-      onSuccess(); // Refresh the subject details after updating
+      onSuccess(); 
     } catch (error: any) {
       toast.error("Failed to update subject ❌");
       console.error("Error updating subject:", error);
@@ -99,7 +99,7 @@ const UpdateSubjectModal: React.FC<UpdateSubjectModalProps> = ({
       backdrop="blur"
       placement="center"
     >
-      <ModalContent className="border-gray-700 p-4 bg-white rounded-3xl shadow-lg">
+      <ModalContent className="border-gray-700 p-4  bg-gray-200 rounded-3xl shadow-lg">
         <ModalHeader className="text-center text-lg font-semibold text-gray-900">
           ✏️ Update Subject
         </ModalHeader>
@@ -109,22 +109,22 @@ const UpdateSubjectModal: React.FC<UpdateSubjectModalProps> = ({
               onSubmit={methods.handleSubmit(onSubmit)}
               className="flex flex-col gap-4"
             >
-              {/* SUBJECT NAME */}
+           
               <FormInput name="subjectName" label="Subject Name" type="text" />
 
-              {/* SUBJECT DESCRIPTION */}
+           
               <FormInput
                 name="subjectDescription"
                 label="Subject Description"
                 type="textarea"
               />
 
-              {/* HOURS */}
+          
               <div>
                 <label className="block text-gray-700 font-medium">Hours</label>
                 <input
                   type="number"
-                  {...methods.register("hours", { valueAsNumber: true })} // 🔥 Ensures it's treated as a number
+                  {...methods.register("hours", { valueAsNumber: true })} 
                   className="w-full px-3 py-2 border-b rounded-md focus:outline-none "
                 />
                 {methods.formState.errors.hours && (
@@ -133,7 +133,7 @@ const UpdateSubjectModal: React.FC<UpdateSubjectModalProps> = ({
                   </p>
                 )}
               </div>
-              {/* BUTTONS */}
+         
               <div className="flex justify-end gap-2">
                 <button
                   type="button"

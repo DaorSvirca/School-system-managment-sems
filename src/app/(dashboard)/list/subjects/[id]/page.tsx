@@ -71,7 +71,7 @@ const SubjectPage = () => {
         <p className="text-center text-gray-200">Loading subject...</p>
       ) : subject ? (
         <>
-          {/* SUBJECT HEADER */}
+         
           <h1 className="text-4xl font-extrabold text-white tracking-wide">
             {subject.subjectName}
           </h1>
@@ -79,7 +79,6 @@ const SubjectPage = () => {
             {subject.subjectDescription}
           </p>
 
-          {/* HOURS SECTION */}
           <div className="flex items-center gap-3 mt-4 bg-white/20 p-4 rounded-lg shadow-md">
             <ClockIcon className="w-8 h-8 text-yellow-400" />
             <span className="text-xl font-semibold text-yellow-300">
@@ -87,28 +86,29 @@ const SubjectPage = () => {
             </span>
           </div>
 
-          {/* ACTION BUTTONS (Only for Admins) */}
-          {userRole === "ADMIN" && (
-            <div className="mt-6 flex gap-4">
-              {/* ✅ OPEN UPDATE SUBJECT MODAL */}
-              <Button
-                onPress={() => setIsUpdateModalOpen(true)}
-                className="flex items-center gap-2 bg-transparent text-white px-5 py-2 rounded-lg shadow-md hover:scale-100 hover:bg-blue-400 transition-transform"
-              >
-                <PencilIcon className="w-5 h-5" />
-                Edit
-              </Button>
+      
+          {userRole === "ADMIN" ||
+            (userRole === "SUPER_ADMIN" && (
+              <div className="mt-6 flex gap-4">
+          
+                <Button
+                  onPress={() => setIsUpdateModalOpen(true)}
+                  className="flex items-center gap-2 bg-transparent text-white px-5 py-2 rounded-lg shadow-md hover:scale-100 hover:bg-blue-400 transition-transform"
+                >
+                  <PencilIcon className="w-5 h-5" />
+                  Edit
+                </Button>
 
-              {/* ✅ OPEN DELETE SUBJECT MODAL */}
-              <Button
-                onPress={() => setIsDeleteModalOpen(true)}
-                className="flex items-center gap-2 bg-transparent text-white px-5 py-2 rounded-lg shadow-md hover:scale-100 hover:bg-red-600 transition-transform"
-              >
-                <TrashIcon className="w-5 h-5" />
-                Delete
-              </Button>
-            </div>
-          )}
+            
+                <Button
+                  onPress={() => setIsDeleteModalOpen(true)}
+                  className="flex items-center gap-2 bg-transparent text-white px-5 py-2 rounded-lg shadow-md hover:scale-100 hover:bg-red-600 transition-transform"
+                >
+                  <TrashIcon className="w-5 h-5" />
+                  Delete
+                </Button>
+              </div>
+            ))}
         </>
       ) : (
         <p className="text-center text-red-400 text-lg font-semibold">
@@ -116,7 +116,7 @@ const SubjectPage = () => {
         </p>
       )}
 
-      {/* ✅ DELETE SUBJECT MODAL */}
+   
       <DeleteSubjectModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
@@ -129,7 +129,7 @@ const SubjectPage = () => {
           isOpen={isUpdateModalOpen}
           onClose={() => setIsUpdateModalOpen(false)}
           subjectId={subject.subjectId}
-          onSuccess={fetchSubject} // Refresh the subject details after updating
+          onSuccess={fetchSubject} 
         />
       )}
     </div>

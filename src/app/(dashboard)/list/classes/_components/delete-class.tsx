@@ -25,15 +25,23 @@ const DeleteClassModal: React.FC<DeleteClassModalProps> = ({
       backdrop="blur"
       placement="center"
     >
-      <ModalContent className=" rounded-3xl">
+      <ModalContent className=" h-[30%] p-4 bg-gray-200 rounded-3xl">
         <ModalHeader>Confirm Deletion</ModalHeader>
         <ModalBody>
           <p>Are you sure you want to delete this class?</p>
           <div className="flex justify-end gap-2">
-            <Button color="default" onPress={onClose}>
+            <Button
+              color="default"
+              className="bg-blue-50 rounded-xl"
+              onPress={onClose}
+            >
               Cancel
             </Button>
-            <Button color="danger" onPress={onDeleteConfirm}>
+            <Button
+              color="danger"
+              className="bg-red-500 rounded-xl"
+              onPress={onDeleteConfirm}
+            >
               Delete
             </Button>
           </div>

@@ -7,16 +7,23 @@ import { Button, Card, CardBody, CardHeader, CardFooter } from "@heroui/react";
 import EditClassModal from "../_components/update-class-modal";
 import DeleteClassModal from "../_components/delete-class";
 
+type UserType = {
+  userId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
 type ClassDataType = {
   groupId: number;
   groupName: string;
+  users?: UserType[]; 
 };
 
 const ClassDetailsPage = () => {
   const params = useParams();
   const router = useRouter();
-  const id = params?.id as string; // Ensure it's a string
-
+  const id = params?.id as string; 
   const [classData, setClassData] = useState<ClassDataType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +31,7 @@ const ClassDetailsPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!id) return; // Avoid making the request if id is undefined
+    if (!id) return;
 
     const fetchClassDetails = async () => {
       try {
@@ -44,7 +51,7 @@ const ClassDetailsPage = () => {
   const handleUpdate = async (updatedData: { groupName: string }) => {
     try {
       await axiosInstance.put(`/api/v1/groups/${id}`, {
-        groupId: Number(id), // Ensure correct data type
+        groupId: Number(id),
         groupName: updatedData.groupName,
       });
 
@@ -60,7 +67,7 @@ const ClassDetailsPage = () => {
   const handleDelete = async () => {
     try {
       await axiosInstance.delete(`/api/v1/groups/${id}`);
-      router.push("/list/classes"); // Redirect after delete
+      router.push("/list/classes");
     } catch (error) {
       console.error("Error deleting class:", error);
     }
@@ -70,20 +77,50 @@ const ClassDetailsPage = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="container mx-auto flex flex-col justify-center items-center">
-      <Card className="w-full max-w-lg shadow-lg rounded-lg p-6 bg-white">
+    <div className="container mx-auto flex flex-col items-center justify-center p-4">
+      <Card className=" bg-gradient-to-br from-blue-500 to-purple-600 w-full max-w-lg shadow-lg rounded-lg p-6 bg-white">
         <CardHeader>
-          <h1 className="text-2xl font-semibold text-lamaPurple">
+          <h1 className="text-2xl font-semibold text-gray-50">
             {classData?.groupName || "No class found"}
           </h1>
         </CardHeader>
         <CardBody>
-          <p className="text-gray-600">Class ID: {classData?.groupId}</p>
+          <p className="text-gray-50 mb-2">Class ID: {classData?.groupId}</p>
+
+
+          <div className="mt-4">
+            <h2 className="font-semibold mb-2 text-gray-50">
+              Students in this Group
+            </h2>
+            {classData?.users && classData.users.length > 0 ? (
+              <ul className="space-y-2">
+                {classData.users.map((student) => (
+                  <li
+                    key={student.userId}
+                    className="flex items-center gap-2 text-gray-50"
+                  >
+
+                    <span className="font-medium text-gray-50">
+                      {student.firstName} {student.lastName}
+                    </span>
+           
+                    <span className="text-gray-50 text-sm">
+                      ({student.email})
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500">
+                No students found in this group.
+              </p>
+            )}
+          </div>
         </CardBody>
         <CardFooter className="flex gap-4 mt-4">
           <Button
             color="primary"
-            className="bg-gray-400 hover:bg-blue-200 rounded-lg"
+            className="bg-blue-50  hover:bg-blue-200 rounded-lg"
             onPress={() => setIsEditModalOpen(true)}
           >
             Edit
@@ -97,6 +134,8 @@ const ClassDetailsPage = () => {
           </Button>
         </CardFooter>
       </Card>
+
+
       <EditClassModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}

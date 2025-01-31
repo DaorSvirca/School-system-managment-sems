@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation"; // ✅ Import useRouter
+import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,19 +16,18 @@ const loginSchema = z.object({
 });
 
 export default function Login() {
+  const router = useRouter();
   const methods = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
 
-  const router = useRouter(); // ✅ Initialize router
   const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false); // ✅ Loading state
+  const [loading, setLoading] = useState(false);
 
-  // ✅ Function to handle redirection based on user role
   const redirectUser = (role: string) => {
     switch (role.toUpperCase()) {
-      case "SUPER_ADMIN": // ✅ Handle SUPER_ADMIN as well
+      case "SUPER_ADMIN":
       case "ADMIN":
         router.push("/admin");
         break;
@@ -39,9 +38,16 @@ export default function Login() {
         router.push("/student");
         break;
       default:
-        router.push("/"); // Redirect to home if role is unknown
+        router.push("/");
     }
   };
+
+  useEffect(() => {
+    const userRole = Cookies.get("userRole");
+    if (userRole) {
+      redirectUser(userRole);
+    }
+  }, []);
 
   const onSubmit = async (data: any) => {
     setLoading(true);
@@ -54,7 +60,7 @@ export default function Login() {
         { withCredentials: true }
       );
 
-      console.log("Response Data:", response.data); // ✅ Debugging Log
+      console.log("Response Data:", response.data);
 
       if (!response.data || !response.data.roleId?.roleName) {
         setErrorMessage("Invalid credentials. Please try again.");
@@ -62,19 +68,16 @@ export default function Login() {
       }
 
       const { userId, email, roleId } = response.data;
-      const roleName = response.data.roleId.roleName; // ✅ Ensure roleName is correctly extracted
+      const roleName = response.data.roleId.roleName;
 
-      // ✅ Store user data in cookies
       Cookies.set("userId", userId, { expires: 1 });
       Cookies.set("userEmail", email, { expires: 1 });
       Cookies.set("roleId", roleId.roleId, { expires: 1 });
       Cookies.set("userRole", roleName, { expires: 1 });
 
-      // ✅ Redirect user based on role
       redirectUser(roleName);
     } catch (error: any) {
       console.error("Login Error:", error);
-
       const message =
         error.response?.data?.message ||
         "Invalid credentials. Please try again.";
@@ -104,7 +107,7 @@ export default function Login() {
               type="submit"
               color="primary"
               fullWidth
-              isDisabled={loading} // ✅ Disable button when loading
+              isDisabled={loading}
             >
               {loading ? "Logging in..." : "Login"}
             </Button>

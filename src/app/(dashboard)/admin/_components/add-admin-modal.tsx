@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import FormInput from "@/components/input-field";
 import { Button } from "@nextui-org/react";
 
-// ✅ Address Schema
+// ✅ Address Schema (if you want to create a new address)
 const addressSchema = z.object({
   street: z.string().min(3, "Street must be at least 3 characters"),
   city: z.string().min(2, "City must be at least 2 characters"),
@@ -19,30 +19,31 @@ const addressSchema = z.object({
   zipCode: z.string().min(4, "Zip Code must be at least 4 digits"),
 });
 
-// ✅ Teacher Schema
-const teacherSchema = z.object({
+// ✅ Admin Schema
+const adminSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email format"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
+  phoneNumber: z.string().min(6, "Phone number must be at least 6 digits"),
   birthDate: z.string().nonempty("Birthdate is required"),
   gender: z.enum(["MALE", "FEMALE"]).default("MALE"),
 });
 
-interface AddTeacherModalProps {
+interface AddAdminModalProps {
   isOpen: boolean;
   onClose: () => void;
-  refreshTeachers: () => void; 
+  refreshAdmins?: () => void; 
 }
 
-const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
+const AddAdminModal: React.FC<AddAdminModalProps> = ({
   isOpen,
   onClose,
-  refreshTeachers, 
+  refreshAdmins,
 }) => {
+
   const methods = useForm({
-    resolver: zodResolver(teacherSchema),
+    resolver: zodResolver(adminSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -53,6 +54,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
       gender: "MALE",
     },
   });
+
 
   const addressMethods = useForm({
     resolver: zodResolver(addressSchema),
@@ -66,81 +68,44 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   });
 
   const [loading, setLoading] = useState(false);
-  const [subjects, setSubjects] = useState<
-    { subjectId: number; subjectName: string }[]
-  >([]);
-  const [selectedSubjects, setSelectedSubjects] = useState<number[]>([]);
-  const [role] = useState<number>(3);
 
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const response = await axiosInstance.get("/api/v1/subjects");
-        setSubjects(response.data);
-      } catch (error) {
-        console.error("Error fetching subjects:", error);
-      }
-    };
-    fetchSubjects();
-  }, []);
 
-  // ✅ Handle Checkbox Click
-  const handleSubjectChange = (subjectId: number) => {
-    setSelectedSubjects((prevSubjects) =>
-      prevSubjects.includes(subjectId)
-        ? prevSubjects.filter((id) => id !== subjectId)
-        : [...prevSubjects, subjectId]
-    );
-  };
-
-  // ✅ Handle form submit
-  const handleFinalSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleFinalSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
 
     try {
 
-      const teacherData = methods.getValues();
+      const adminData = methods.getValues();
       const addressData = addressMethods.getValues();
 
-      if (selectedSubjects.length === 0) {
-        toast.error("Please select at least one subject.");
-        setLoading(false);
-        return;
-      }
 
       const addressResponse = await axiosInstance.post(
         "/api/v1/addresses",
         addressData
       );
-      const addressId = addressResponse.data.addressId;
+      const addressId = addressResponse.data.addressId; 
 
-
-      const subjectObjects = selectedSubjects.map((id) => ({ subjectId: id }));
-
-
-      const finalTeacherData = {
-        ...teacherData,
-        addressId: { addressId },
-        roleId: { roleId: role, roleName: "PROFESSOR" },
-        subjects: subjectObjects,
+      const finalAdminData = {
+        ...adminData,
+        address: { addressId },
+        role: {
+          roleId: 1,
+          roleName: "ADMIN",
+        },
       };
 
+      console.log("Final Admin Data:", JSON.stringify(finalAdminData, null, 2));
 
-      console.log(
-        "Final Teacher Data:",
-        JSON.stringify(finalTeacherData, null, 2)
-      );
 
-      // 5) Create teacher (professor)
-      await axiosInstance.post("/api/v1/professors", finalTeacherData);
+      await axiosInstance.post("/api/v1/users", finalAdminData);
 
-      toast.success("Teacher (Professor) added successfully!");
-      refreshTeachers(); 
+      toast.success("Admin added successfully!");
+      refreshAdmins?.(); 
       onClose(); 
     } catch (error) {
-      toast.error("Failed to add teacher.");
-      console.error("Error adding teacher:", error);
+      toast.error("Failed to add admin.");
+      console.error("Error adding admin:", error);
     } finally {
       setLoading(false);
     }
@@ -150,15 +115,15 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
     <Modal isOpen={isOpen} onOpenChange={onClose} size="lg" backdrop="blur">
       <ModalContent className="p-6 bg-white rounded-xl shadow-lg max-w-4xl">
         <ModalHeader className="text-center text-xl font-bold text-gray-900">
-          ➕ Add Teacher
+          ➕ Add Admin
         </ModalHeader>
 
         <ModalBody>
           <form onSubmit={handleFinalSubmit} className="space-y-6">
-            {/* ✅ Address Form */}
+
             <FormProvider {...addressMethods}>
               <h3 className="text-lg font-semibold text-gray-800">
-                🗺️ Address Information
+                🗺️ Address Info
               </h3>
               <div className="grid grid-cols-3 gap-4">
                 <FormInput name="street" label="Street" type="text" />
@@ -169,10 +134,10 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
               </div>
             </FormProvider>
 
-            {/* ✅ Teacher Form */}
+
             <FormProvider {...methods}>
               <h3 className="text-lg font-semibold text-gray-800">
-                👤 Teacher Information
+                👤 Admin Info
               </h3>
               <div className="grid grid-cols-3 gap-4">
                 <FormInput name="firstName" label="First Name" type="text" />
@@ -186,43 +151,22 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                 />
                 <FormInput name="birthDate" label="Birth Date" type="date" />
               </div>
-
-              {/* ✅ Subject Checkboxes */}
-              <h3 className="text-lg font-semibold text-gray-800">
-                📚 Assign Subjects
-              </h3>
-              <div className="grid grid-cols-3 gap-4">
-                {subjects.map((subject) => (
-                  <label
-                    key={subject.subjectId}
-                    className="flex items-center gap-2"
-                  >
-                    <input
-                      type="checkbox"
-                      value={subject.subjectId}
-                      checked={selectedSubjects.includes(subject.subjectId)}
-                      onChange={() => handleSubjectChange(subject.subjectId)}
-                    />
-                    {subject.subjectName}
-                  </label>
-                ))}
-              </div>
-
-
-              <div className="flex justify-end gap-3 mt-6">
-                <Button
-                  onPress={onClose}
-                  color="danger"
-                  variant="flat"
-                  isDisabled={loading}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" color="primary" isDisabled={loading}>
-                  {loading ? "Adding..." : "Add Teacher"}
-                </Button>
-              </div>
             </FormProvider>
+
+
+            <div className="flex justify-end gap-3 mt-6">
+              <Button
+                color="danger"
+                variant="flat"
+                onPress={onClose}
+                isDisabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" color="primary" isDisabled={loading}>
+                {loading ? "Adding..." : "Add Admin"}
+              </Button>
+            </div>
           </form>
         </ModalBody>
       </ModalContent>
@@ -230,4 +174,4 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   );
 };
 
-export default AddTeacherModal;
+export default AddAdminModal;

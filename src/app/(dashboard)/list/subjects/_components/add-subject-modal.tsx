@@ -48,7 +48,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
 
   const [loading, setLoading] = useState(false);
 
-  // ✅ Reset form when modal opens
+  
   useEffect(() => {
     if (isOpen) {
       methods.reset({
@@ -69,7 +69,7 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
       await axiosInstance.post("/api/v1/subjects", data);
       toast.success("Subject added successfully! 🎉");
 
-      // ✅ Reset form after successful submission
+ 
       methods.reset({
         subjectName: "",
         subjectDescription: "",
@@ -108,22 +108,22 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
               onSubmit={methods.handleSubmit(onSubmit)}
               className="flex flex-col gap-4"
             >
-              {/* SUBJECT NAME */}
+             
               <FormInput name="subjectName" label="Subject Name" type="text" />
 
-              {/* SUBJECT DESCRIPTION */}
+             
               <FormInput
                 name="subjectDescription"
                 label="Subject Description"
                 type="textarea"
               />
 
-              {/* HOURS */}
+             
               <div>
                 <label className="block text-gray-700 font-medium">Hours</label>
                 <input
                   type="number"
-                  {...methods.register("hours", { valueAsNumber: true })} // 🔥 Ensures it's treated as a number
+                  {...methods.register("hours", { valueAsNumber: true })} 
                   className="w-full px-3 py-2 border-b rounded-md focus:outline-none "
                 />
                 {methods.formState.errors.hours && (
@@ -133,7 +133,6 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
                 )}
               </div>
 
-              {/* BUTTONS */}
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
